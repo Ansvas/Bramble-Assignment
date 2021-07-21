@@ -1,39 +1,57 @@
 defmodule BrambleTestWeb.PageLive do
   use BrambleTestWeb, :live_view
+  alias BrambleTest.Model.Rating
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, query: "", results: %{})}
+    ratings = Rating.list_ratings()
+    chart_value = cal_chart_value(ratings)
+    {:ok, assign(socket, chart_value: chart_value, ratings: ratings)}
   end
 
   @impl true
-  def handle_event("suggest", %{"q" => query}, socket) do
-    {:noreply, assign(socket, results: search(query), query: query)}
+  def handle_event("submit", %{"name" => name, "quantity" => quantity}, socket) do
+    Rating.create_rating(%{"name" => name, "quantity" => quantity})
+    ratings = Rating.list_ratings()
+    chart_value = cal_chart_value(ratings)
+    {:noreply,
+      socket
+      |> put_flash(:success, "Rating added successfully")
+      |> assign(results: %{}, chart_value: chart_value, ratings: ratings)}
   end
 
-  @impl true
-  def handle_event("search", %{"q" => query}, socket) do
-    case search(query) do
-      %{^query => vsn} ->
-        {:noreply, redirect(socket, external: "https://hexdocs.pm/#{query}/#{vsn}")}
+  defp cal_chart_value(ratings) do
+    atoi =
+    Enum.reduce(ratings,0, fn(rating, accumulator) ->
+      if "abcdefghiABCDEFGHI" =~ String.at(rating.name, 0) do
+        accumulator + rating.quantity
+      else
+        accumulator
+      end
+    end)
 
-      _ ->
-        {:noreply,
-         socket
-         |> put_flash(:error, "No dependencies found matching \"#{query}\"")
-         |> assign(results: %{}, query: query)}
-    end
-  end
+      jtor =
+      Enum.reduce(ratings,0, fn(rating, accumulator) ->
+        if "jklmnopqJKLMNOPQR" =~ String.at(rating.name, 0) do
+          accumulator + rating.quantity
+        else
+          accumulator
+        end
+      end)
 
-  defp search(query) do
-    if not BrambleTestWeb.Endpoint.config(:code_reloader) do
-      raise "action disabled when not in development"
-    end
+      stoz =
+      Enum.reduce(ratings,0, fn(rating, accumulator) ->
+        if "stuvwxyzSTUVWXYZ" =~ String.at(rating.name, 0) do
+          accumulator + rating.quantity
+        else
+          accumulator
+        end
+      end)
 
-    for {app, desc, vsn} <- Application.started_applications(),
-        app = to_string(app),
-        String.starts_with?(app, query) and not List.starts_with?(desc, ~c"ERTS"),
-        into: %{},
-        do: {app, vsn}
-  end
+        %{
+          atoi: atoi,
+          jtor: jtor,
+          stoz: stoz
+        }
+end
 end

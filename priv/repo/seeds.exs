@@ -1,11 +1,17 @@
-# Script for populating the database. You can run it as:
-#
-#     mix run priv/repo/seeds.exs
-#
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     BrambleTest.Repo.insert!(%BrambleTest.SomeSchema{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+alias BrambleTest.Repo
+alias BrambleTest.Schema.Rating
+
+  Repo.insert! %Rating{
+    name: "Jack",
+    quantity: 50
+  }
+
+  Repo.insert! %Rating{
+    name: "Jone",
+    quantity: 60
+  }
+
+  Repo.insert! %Rating{
+    name: "Maria",
+    quantity: 100
+  }

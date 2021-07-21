@@ -1,13 +1,56 @@
+<input type="hidden" value="<%= @chart_value.atoi %>" id="atoi" />
+<input type="hidden" value="<%= @chart_value.jtor %>" id="jtor" />
+<input type="hidden" value="<%= @chart_value.stoz %>" id="stoz" />
 <section>
-  <div class="container">
-    div header
+  <div class='header'>
+    <div class=''>
+      <div class='center'>
+        <form phx-submit="submit">
+          <div class="form-group">
+            <div class='field row-baseline first-field'>
+              <label for='inputName'>Name</label>
+              <div class="first-input">
+                <input type="text" name="name" class="form-control" id="inputName" placeholder="">
+              </div>
+            </div>
+            <div class='field row-baseline second-field'>
+              <label for='inputQuantity'>Quantity(%)</label>
+              <div class="second-input">
+                <input type="text" name="quantity" class="form-control" id="inputQuantity" placeholder="">
+              </div>
+            </div>
+            <div class='field sub-button'>
+              <button>Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    <%# <div class='col-sm-3'></div> %>
+    <div>
   </div>
 </section>
-<section class="row">
-  <div class="column">
-  div 1
-  </div>
-  <div class="column">
-  div 2
+<section>
+  <div class='table-chart-container'>
+    <div class="table-div">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for rating <- @ratings do %>
+            <tr>
+            <td class='name'><%= rating.name %></td>
+            <td class='quantity'><%= rating.quantity %>%</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="chart">
+      <canvas id="pie-chart" width="400" height="400"></canvas>
+    </div>
   </div>
 </section>

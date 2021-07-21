@@ -34,3 +34,26 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
+var atoi = document.getElementById("atoi").value;
+var jtor = document.getElementById("jtor").value;
+var stoz = document.getElementById("stoz").value;
+var data = [atoi, jtor, stoz]
+console.log(data)
+new Chart(document.getElementById("pie-chart"), {
+    type: 'pie',
+    data: {
+      labels: ["A-I", "J-R", "S-Z"],
+      datasets: [{
+        label: "Population (millions)",
+        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f"],
+        data: data
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Quality(%)'
+      }
+    }
+});
+
