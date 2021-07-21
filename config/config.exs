@@ -12,7 +12,7 @@ config :bramble_test,
 
 # Configures the endpoint
 config :bramble_test, BrambleTestWeb.Endpoint,
-  url: [host: "localhost"],
+url: [host: "brambletest.gigalixirapp.com/", port: 443, scheme: "https"],
   secret_key_base: "vzrideMmT/MlHTmG841Bo82sa7s35092OTsJyPvzq4afU09Wh3MBf8Wrtw/RgznT",
   render_errors: [view: BrambleTestWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: BrambleTest.PubSub,
