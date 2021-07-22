@@ -21,37 +21,15 @@ defmodule BrambleTestWeb.PageLive do
   end
 
   defp cal_chart_value(ratings) do
-    atoi =
-    Enum.reduce(ratings,0, fn(rating, accumulator) ->
-      if "abcdefghiABCDEFGHI" =~ String.at(rating.name, 0) do
-        accumulator + rating.quantity
-      else
-        accumulator
+    Enum.reduce(ratings, %{"atoi"=> 0, "jtor"=> 0, "stoz"=> 0}, fn(rating, accumulator) ->
+      cond do
+        "abcdefghiABCDEFGHI" =~ String.at(rating.name, 0) ->
+          Map.put(accumulator, "atoi", accumulator["atoi"] + rating.quantity)
+        "jklmnopqJKLMNOPQR" =~ String.at(rating.name, 0) ->
+          Map.put(accumulator, "jtor", accumulator["jtor"] + rating.quantity)
+        "stuvwxyzSTUVWXYZ" =~ String.at(rating.name, 0) ->
+          Map.put(accumulator, "stoz", accumulator["stoz"] + rating.quantity)
       end
     end)
-
-      jtor =
-      Enum.reduce(ratings,0, fn(rating, accumulator) ->
-        if "jklmnopqJKLMNOPQR" =~ String.at(rating.name, 0) do
-          accumulator + rating.quantity
-        else
-          accumulator
-        end
-      end)
-
-      stoz =
-      Enum.reduce(ratings,0, fn(rating, accumulator) ->
-        if "stuvwxyzSTUVWXYZ" =~ String.at(rating.name, 0) do
-          accumulator + rating.quantity
-        else
-          accumulator
-        end
-      end)
-
-        %{
-          atoi: atoi,
-          jtor: jtor,
-          stoz: stoz
-        }
-end
+  end
 end
